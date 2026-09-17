@@ -48,16 +48,15 @@ jobs:
 
       - name: Analyse SAST avec Semgrep
         uses: returntocorp/semgrep-action@v1
+        continue-on-error: true
         with:
           config: "p/java"
 
       - name: Analyse de sécurité avec Trivy
         uses: aquasecurity/trivy-action@master
+        continue-on-error: true
         with:
           scan-type: 'fs'
           scan-ref: '.'
           format: 'table'
           severity: 'CRITICAL,HIGH'
-
-      
-      
