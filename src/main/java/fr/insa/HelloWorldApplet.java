@@ -47,3 +47,4 @@ public class HelloWorldApplet extends Applet {
         apdu.setOutgoingAndSend((short)0, HELLO_WORLD_LEN);
     }
 }
+Ceci est une erreur volontaire
