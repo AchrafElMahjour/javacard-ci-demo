@@ -45,6 +45,7 @@ jobs:
           chmod +x scripts/run_tests.sh
           ./scripts/run_tests.sh
 
+
       - name: Analyse SAST avec Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
@@ -57,3 +58,7 @@ jobs:
           scan-ref: '.'
           format: 'table'
           severity: 'CRITICAL,HIGH'
+
+      
+      
+>>>>>>> 08372f1d979d816448aa9ac905db208ed3d76e8e
