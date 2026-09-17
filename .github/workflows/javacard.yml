@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout code
@@ -47,16 +50,30 @@ jobs:
 
 
       - name: Analyse SAST avec Semgrep
-        uses: returntocorp/semgrep-action@v1
-        continue-on-error: true
+        uses: semgrep/semgrep-action@v1
+        continue-on-error: true   # tant que tu nettoies les faux positifs
         with:
           config: "p/java"
+          generateSarif: "1"
+
+      - name: Upload résultats Semgrep vers GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
 
       - name: Analyse de sécurité avec Trivy
-        uses: aquasecurity/trivy-action@master
-        continue-on-error: true
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
-          format: 'table'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+          exit-code: '1'   # fait échouer le build sur CRITICAL/HIGH
+
+      - name: Upload résultats Trivy vers GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
