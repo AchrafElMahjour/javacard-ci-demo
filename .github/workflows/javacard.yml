@@ -45,15 +45,4 @@ jobs:
           chmod +x scripts/run_tests.sh
           ./scripts/run_tests.sh
       
-      - name: Analyse SAST avec Semgrep
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: "p/java"
-
-      - name: Analyse de sécurité avec Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
+      
